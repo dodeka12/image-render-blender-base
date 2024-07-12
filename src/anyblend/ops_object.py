@@ -293,7 +293,12 @@ def ImportToScene_Obj(_pathFile: Path) -> list[str]:
         # then look for the objects that are not in that set, after import.
         setObj: set[str] = set([x.name for x in bpy.data.objects])
 
-        setRes = bpy.ops.import_scene.obj(filepath=_pathFile.as_posix())
+        if bpy.app.version < (4, 0, 0):
+            setRes = bpy.ops.import_scene.obj(filepath=_pathFile.as_posix())
+        else:
+            setRes = bpy.ops.wm.obj_import(filepath=_pathFile.as_posix())
+        # endif
+        
         # print(f"Importing '{(_pathFile.as_posix())}' -> {setRes}")
         if setRes.pop() != "FINISHED":
             raise RuntimeError(f"Error importing object from path: {(_pathFile.as_posix())}")
