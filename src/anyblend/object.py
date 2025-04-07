@@ -391,21 +391,37 @@ def GetActiveObject(_xContext):
 
 
 ################################################################################
-def ParentObject(_objParent, _objChild, bKeepTransform=True, bKeepRelTransform=False):
+def ParentObject(_objParent: bpy.types.Object, _objChild: bpy.types.Object, bKeepTransform=True, bKeepRelTransform=False, bKeepScale=False):
     # sys.stderr.write(f"\n>>>>> bKeepTransform: {bKeepTransform}\n")
     # sys.stderr.write(f"\n>>>>> bKeepRelTransform: {bKeepRelTransform}\n")
     # sys.stderr.flush()
 
     matChild_world = _objChild.matrix_world.copy()
+    vChildSca = _objChild.scale.copy()
     _objChild.parent = _objParent
 
     if bKeepTransform is True:
         _objChild.matrix_parent_inverse.identity()
         _objChild.matrix_basis = _objParent.matrix_world.inverted() @ matChild_world
 
-    elif bKeepRelTransform is False:
-        _objChild.matrix_parent_inverse.identity()
-        _objChild.matrix_basis.identity()
+    else:
+        if bKeepRelTransform is False:
+            _objChild.matrix_parent_inverse.identity()
+            _objChild.matrix_basis.identity()
+
+        if bKeepScale is True:
+            matParent: mathutils.Matrix = _objParent.matrix_world
+            vLoc, qRot, vSca = matParent.decompose()
+            print(f"vChildSca: {vChildSca}")
+            print(f"vSca: {vSca}")
+            _objChild.scale = mathutils.Vector((
+                vChildSca.x / vSca.x, 
+                vChildSca.y / vSca.y, 
+                vChildSca.z / vSca.z)
+            )
+            print(f"_objChild.scale: {_objChild.scale}")
+            # matInvScale = mathutils.Matrix.Diagonal(mathutils.Vector((1.0 / vSca.x, 1.0 / vSca.y, 1.0 / vSca.z, 1.0)))
+            # _objChild.matrix_world = matInvScale @ _objChild.matrix_world
     # endif
 
 
