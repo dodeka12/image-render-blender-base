@@ -62,20 +62,31 @@ class EProjection(str, Enum):
 
 # endclass
 
-
-class EColorSpace(str, Enum):
-    FILMIC_LOG = "Filmic Log"
-    FILMIC_SRGB = "Filmic sRGB"
-    LINEAR = "Linear"
-    LINEAR_ACES = "Linear ACES"
-    LINEAR_ACES_CG = "Linear ACEScg"
-    NON_COLOR = "Non-Color"
-    RAW = "Raw"
-    SRGB = "sRGB"
-    XYZ = "XYZ"
-
-
-# endclass
+if bpy.app.version < (4, 0, 0):
+    class EColorSpace(str, Enum):
+        FILMIC_LOG = "Filmic Log"
+        FILMIC_SRGB = "Filmic sRGB"
+        LINEAR = "Linear"
+        LINEAR_ACES = "Linear ACES"
+        LINEAR_ACES_CG = "Linear ACEScg"
+        NON_COLOR = "Non-Color"
+        RAW = "Raw"
+        SRGB = "sRGB"
+        XYZ = "XYZ"
+    # endclass
+else:
+    class EColorSpace(str, Enum):
+        FILMIC_LOG = "Filmic Log"
+        FILMIC_SRGB = "Filmic sRGB"
+        LINEAR = "Linear Rec.709"
+        LINEAR_ACES = "ACES2065-1"
+        LINEAR_ACES_CG = "ACEScg"
+        NON_COLOR = "Non-Color"
+        RAW = "Non-Color"
+        SRGB = "sRGB"
+        XYZ = "Linear CIE-XYZ D65"
+    # endclass
+# endif
 
 
 class EAlphaMode(str, Enum):
