@@ -412,14 +412,14 @@ def ParentObject(_objParent: bpy.types.Object, _objChild: bpy.types.Object, bKee
         if bKeepScale is True:
             matParent: mathutils.Matrix = _objParent.matrix_world
             vLoc, qRot, vSca = matParent.decompose()
-            print(f"vChildSca: {vChildSca}")
-            print(f"vSca: {vSca}")
+            # print(f"vChildSca: {vChildSca}")
+            # print(f"vSca: {vSca}")
             _objChild.scale = mathutils.Vector((
                 vChildSca.x / vSca.x, 
                 vChildSca.y / vSca.y, 
                 vChildSca.z / vSca.z)
             )
-            print(f"_objChild.scale: {_objChild.scale}")
+            # print(f"_objChild.scale: {_objChild.scale}")
             # matInvScale = mathutils.Matrix.Diagonal(mathutils.Vector((1.0 / vSca.x, 1.0 / vSca.y, 1.0 / vSca.z, 1.0)))
             # _objChild.matrix_world = matInvScale @ _objChild.matrix_world
     # endif
